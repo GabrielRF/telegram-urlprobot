@@ -1,0 +1,4 @@
+pytelegrambotapi
+unshortenit
+requests
+configparser

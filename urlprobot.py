@@ -85,6 +85,7 @@ def send_welcome(message):
 
 @bot.message_handler(func=lambda m: True)
 def echo_all(message):
+    print(message.from_user.id)
     try:
         response = requests.get(message.text)
         if response.status_code == 200:
@@ -96,6 +97,3 @@ def echo_all(message):
         bot.reply_to(message, 'Please, send me a valid link.\nhttp:// might be necessary.')
 
 bot.polling(none_stop=True)
-
-while True:
-    time.sleep(20)

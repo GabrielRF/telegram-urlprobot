@@ -90,7 +90,7 @@ def echo_all(message):
         response = requests.get(message.text)
         if response.status_code == 200:
             url = url_expander(message.text)
-            bot.reply_to(message, 'Long url:\n'+ url_expander(url) + '\nShort url:\n' + url_shortener(url), disable_web_page_preview=True)
+            bot.reply_to(message, url_expander(url), disable_web_page_preview=True)
     except requests.exceptions.MissingSchema:
         bot.reply_to(message, 'Please, send me a valid link.\nhttp:// might be necessary.')
     except requests.exceptions.InvalidSchema:

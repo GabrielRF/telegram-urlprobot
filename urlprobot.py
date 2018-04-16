@@ -17,13 +17,8 @@ bot = telebot.TeleBot(config['DEFAULTS']['bot_token'])
 client = googl.Googl(config['DEFAULTS']['google_client'])
 
 def url_shortener(text):
-    try:
-        args=text
-        result = client.shorten(args)
-        url_shortened=(result['id'])
-        return url_shortened
-    except:
-        pass
+    response = requests.get('http://tinyurl.com/api-create.php?url=' + text)
+    return response.content.decode('utf-8')
 
 def url_expander(url):
     unshortened_uri,status = unshortenit.unshorten(url)
@@ -85,12 +80,13 @@ def send_welcome(message):
 
 @bot.message_handler(func=lambda m: True)
 def echo_all(message):
+    bot.send_chat_action(message.chat.id, 'typing')
     print(message.from_user.id)
     try:
         response = requests.get(message.text)
         if response.status_code == 200:
             url = url_expander(message.text)
-            bot.reply_to(message, url_expander(url), disable_web_page_preview=True)
+            bot.reply_to(message, 'Long url:\n'+ url_expander(url) + '\nShort url:\n' + url_shortener(url), disable_web_page_preview=True)
     except requests.exceptions.MissingSchema:
         bot.reply_to(message, 'Please, send me a valid link.\nhttp:// might be necessary.')
     except requests.exceptions.InvalidSchema:

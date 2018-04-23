@@ -1,11 +1,11 @@
 import telebot
 import time
-import googl
 import urllib
 import unshortenit
 import requests
 import sys
 import configparser
+from pyshorteners import Shortener
 from telebot import types
 
 config = configparser.ConfigParser()
@@ -14,11 +14,16 @@ config.read('urlprobot.conf')
 
 min_url_size = config['DEFAULTS']['min_url_size']
 bot = telebot.TeleBot(config['DEFAULTS']['bot_token'])
-client = googl.Googl(config['DEFAULTS']['google_client'])
+bitly_token = config['DEFAULTS']['bitly']
 
 def url_shortener(text):
-    response = requests.get('http://tinyurl.com/api-create.php?url=' + text)
-    return response.content.decode('utf-8')
+    try:
+        shortener = Shortener('Bitly', bitly_token=bitly_token)
+        print(urllib.parse.quote_plus(text))
+        return shortener.short(text)
+    except:
+        response = requests.get('http://tinyurl.com/api-create.php?url=' + text)
+        return response.content.decode('utf-8')
 
 def url_expander(url):
     unshortened_uri,status = unshortenit.unshorten(url)

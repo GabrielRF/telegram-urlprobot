@@ -19,7 +19,6 @@ bitly_token = config['DEFAULTS']['bitly']
 def url_shortener(text):
     try:
         shortener = Shortener('Bitly', bitly_token=bitly_token)
-        print(urllib.parse.quote_plus(text))
         return shortener.short(text)
     except:
         response = requests.get('http://tinyurl.com/api-create.php?url=' + text)

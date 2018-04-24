@@ -11,6 +11,7 @@ Be sure to create the file `urlprobot.conf` and set it as follows:
 bot_token = 1234567890EXAMPLE0987654321
 google_client = 1234567890EXAMPLE0987654321
 min_url_size = 5
+bitly = 1234567890EXAMPLE0987654321
 ```
 
 Then run:
